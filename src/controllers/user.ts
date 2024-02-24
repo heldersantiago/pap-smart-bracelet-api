@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { User } from "../models/user";
 import { IUser } from "../types/User";
+import { UpdateOptions } from "sequelize";
 
 export class UserController {
   public async index(req: Request, res: Response) {
@@ -24,36 +25,51 @@ export class UserController {
       console.error(err);
       res
         .status(500)
-        .json({ error: "Internal Server Error", message: { err } });
+        .json({ error: "Ooops! We´re in trouble", message: { err } });
     }
   }
 
   public async show(req: Request, res: Response) {
     const UserId: number = Number(req.params.id);
-    User.findByPk<User>(UserId).then((user: User | null) => {
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ error: "User not found" });
-      }
-    });
+    User.findByPk<User>(UserId)
+      .then((user: User | null) => {
+        if (user) {
+          res.json(user);
+        } else {
+          res.status(404).json({ error: "User not found" });
+        }
+      })
+      .catch((err) => res.status(500).json({ error: err }));
   }
 
   public async update(req: Request, res: Response) {
-    const user = await User.findOne<User>({
+    const UserId = req.params.id;
+    const params: IUser = req.body;
+
+    const update: UpdateOptions = {
       where: {
-        id: req.params.id,
+        id: UserId,
       },
-    });
-    res.json(user);
+      limit: 1,
+    };
+
+    User.update(params, update)
+      .then(() => res.status(202).json({ message: "success" }))
+      .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 
   public async destroy(req: Request, res: Response) {
-    const user = await User.findOne<User>({
+    const UserId = req.params.id;
+
+    const options: UpdateOptions = {
       where: {
-        id: req.params.id,
+        id: UserId,
       },
-    });
-    res.json(user);
+      limit: 1,
+    };
+
+    User.destroy(options)
+      .then(() => res.status(204).json({ message: "success" }))
+      .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 }
