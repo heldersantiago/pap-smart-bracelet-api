@@ -5,12 +5,22 @@ import { IUser } from "../types/User";
 import { UpdateOptions } from "sequelize";
 
 export class UserController {
+  /**
+   * Returns a list of all users in the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   public async index(req: Request, res: Response) {
     User.findAll<User>({})
       .then((users: Array<User>) => res.json(users))
       .catch((err) => res.status(500).json(err));
   }
 
+  /**
+   * Creates a new user in the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   public async create(req: Request, res: Response) {
     const params: IUser = req.body;
     try {
@@ -29,6 +39,11 @@ export class UserController {
     }
   }
 
+  /**
+   * Show an existing user in the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   public async show(req: Request, res: Response) {
     const UserId: number = Number(req.params.id);
     User.findByPk<User>(UserId)
@@ -42,6 +57,11 @@ export class UserController {
       .catch((err) => res.status(500).json({ error: err }));
   }
 
+  /**
+   * Updates an existing user in the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   public async update(req: Request, res: Response) {
     const UserId = req.params.id;
     const params: IUser = req.body;
@@ -58,6 +78,11 @@ export class UserController {
       .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 
+  /**
+   * Deletes an existing user in the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
   public async destroy(req: Request, res: Response) {
     const UserId = req.params.id;
 
