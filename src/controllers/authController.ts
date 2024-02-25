@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import { User } from "../models/user";
-import { JsonWebTokenError } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
-import { ILoginForm } from "../types/LoginForm";
+import { IUserLogin } from "../types/UserLogin";
 
 export class AuthController {
   public async login(req: Request, res: Response) {
     try {
-      const { email, password }: ILoginForm = req.body;
+      const { email, password }: IUserLogin = req.body;
 
       const user = await User.findOne({ where: { email } });
 
@@ -22,7 +21,7 @@ export class AuthController {
 
       const token = jwt.sign(
         { id: user?.id, email: user?.email },
-        "hsjmzj8w8JJSH8833ssjjJu@Wjwtsssu7",
+        "heldersantiago273",
         {
           expiresIn: "1d",
         }
