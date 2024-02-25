@@ -9,7 +9,7 @@ dotenv.config({ path: envPATH });
 const authorize = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization!.split(" ")[1];
-    const decode = jwt.verify(token, String(process.env.JWT_SECRET));
+    const decode = jwt.verify(token, String(process.env.JWT_SECRET_KEY));
     req.body.user = decode;
 
     if (!token) {
