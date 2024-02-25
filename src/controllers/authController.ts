@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import { User } from "../models/user";
 import jwt from "jsonwebtoken";
 import { IUserLogin } from "../types/UserLogin";
+import * as dotenv from "dotenv";
+import path from "path";
+
+const envPATH = path.resolve(__dirname, "../../.env");
+dotenv.config({ path: envPATH });
 
 export class AuthController {
   public async login(req: Request, res: Response) {
@@ -21,7 +26,7 @@ export class AuthController {
 
       const token = jwt.sign(
         { id: user?.id, email: user?.email },
-        "heldersantiago273",
+        String(process.env.JWT_SECRET),
         {
           expiresIn: "1d",
         }

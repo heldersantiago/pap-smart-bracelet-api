@@ -9,11 +9,6 @@ dotenv.config({ path: envPATH });
 
 // Configuring the environment with the default settings for the application
 const env: IEnv = {
-  APP_NAME: process.env.APP_NAME || "",
-  APP_MODE: process.env.APP_MODE || "",
-  DEBUG: process.env.DEBUG === "true",
-
-  // Parse DB_PORT as a number
   DB_HOST: process.env.DB_HOST || "",
   DB_PORT: parseInt(process.env.DB_PORT || "0", 10),
   DB_USER: process.env.DB_USER || "",
