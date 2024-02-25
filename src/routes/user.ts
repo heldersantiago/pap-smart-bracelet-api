@@ -13,6 +13,6 @@ export class Routes {
       .route("/users/:id")
       .get(this.userController.show)
       .put(this.userController.update)
-      .delete(this.userController.destroy);
+      .delete(this.userController.index);
   }
 }

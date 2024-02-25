@@ -40,6 +40,7 @@ export class UserController {
   }
 
   /**
+   * @swagger
    * Show an existing user in the database.
    * @param req - The request object.
    * @param res - The response object.
@@ -58,6 +59,7 @@ export class UserController {
   }
 
   /**
+   * @swagger
    * Updates an existing user in the database.
    * @param req - The request object.
    * @param res - The response object.
@@ -79,6 +81,7 @@ export class UserController {
   }
 
   /**
+   * @swagger
    * Deletes an existing user in the database.
    * @param req - The request object.
    * @param res - The response object.
