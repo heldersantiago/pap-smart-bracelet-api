@@ -4,7 +4,6 @@ import { UpdateOptions } from "sequelize";
 import { Bracelet } from "../models/Bracelet";
 import { IBracelet } from "../types/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
-``;
 import { User } from "../models/User";
 
 export class BraceletController {
