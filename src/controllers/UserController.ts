@@ -1,50 +1,32 @@
 // lib/controllers/nodes.controller.ts
 import { Request, Response } from "express";
-import { User } from "../models/user";
+import { User } from "../models/User";
 import { IUser } from "../types/User";
-import { UpdateOptions } from "sequelize";
+import { Error, UpdateOptions } from "sequelize";
+import { ErrorResponde } from "../types/ErrorResponse";
 
 export class UserController {
-  /**
-   * Returns a list of all users in the database.
-   * @param req - The request object.
-   * @param res - The response object.
-   */
   public async index(req: Request, res: Response) {
     User.findAll<User>({})
       .then((users: Array<User>) => res.json(users))
-      .catch((err) => res.status(500).json(err));
+      .catch((err: Error) => res.status(500).json(err.message));
   }
 
-  /**
-   * Creates a new user in the database.
-   * @param req - The request object.
-   * @param res - The response object.
-   */
   public async create(req: Request, res: Response) {
     const params: IUser = req.body;
-    try {
-      const newUser = await User.create<User>({
-        name: params.name,
-        email: params.email,
-        password: params.password,
-      });
-
-      res.status(201).json(newUser);
-    } catch (err) {
-      console.error(err);
-      res
-        .status(500)
-        .json({ error: "Ooops! We´re in trouble", message: { err } });
-    }
+    const newUser: any = await User.create<User>({
+      name: params.name,
+      email: params.email,
+      password: params.password,
+      bracelet_id: params.bracelet_id,
+      relative_tie: params.relative_tie,
+    })
+      .then((user) => res.status(201).json(user))
+      .catch((err: ErrorResponde) =>
+        res.status(500).json({ name: err.name, errors: err.message })
+      );
   }
 
-  /**
-   * @swagger
-   * Show an existing user in the database.
-   * @param req - The request object.
-   * @param res - The response object.
-   */
   public async show(req: Request, res: Response) {
     const UserId: number = Number(req.params.id);
     User.findByPk<User>(UserId)
@@ -52,18 +34,14 @@ export class UserController {
         if (user) {
           res.json(user);
         } else {
-          res.status(404).json({ error: "User not found" });
+          res.status(404).json({ error: "user not found" });
         }
       })
-      .catch((err) => res.status(500).json({ error: err }));
+      .catch((err: ErrorResponde) =>
+        res.status(500).json({ name: err.name, error: err.message })
+      );
   }
 
-  /**
-   * @swagger
-   * Updates an existing user in the database.
-   * @param req - The request object.
-   * @param res - The response object.
-   */
   public async update(req: Request, res: Response) {
     const UserId = req.params.id;
     const params: IUser = req.body;
@@ -80,12 +58,6 @@ export class UserController {
       .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 
-  /**
-   * @swagger
-   * Deletes an existing user in the database.
-   * @param req - The request object.
-   * @param res - The response object.
-   */
   public async destroy(req: Request, res: Response) {
     const UserId = req.params.id;
 

@@ -1,5 +1,5 @@
 // lib/models/node.model.ts
-import { Sequelize, Model, DataTypes, BuildOptions } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { database } from "../config/database";
 
 export class User extends Model {
@@ -7,11 +7,13 @@ export class User extends Model {
   public name!: string;
   public email!: string;
   public password!: string;
+  public bracelet_id!: string;
+  public relative_tie!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-// user migration
+// user migrations
 User.init(
   {
     id: {
@@ -29,6 +31,15 @@ User.init(
       unique: true,
     },
     password: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    bracelet_id: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+      unique: true,
+    },
+    relative_tie: {
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
