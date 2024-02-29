@@ -9,6 +9,7 @@ export class User extends Model {
   public password!: string;
   public bracelet_id!: string;
   public relative_tie!: string;
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -37,7 +38,6 @@ User.init(
     bracelet_id: {
       type: new DataTypes.STRING(128),
       allowNull: false,
-      unique: true,
     },
     relative_tie: {
       type: new DataTypes.STRING(128),
@@ -50,4 +50,4 @@ User.init(
   }
 );
 
-User.sync({ force: true }).then(() => console.log("User table created"));
+User.sync({ alter: true }).then(() => console.log("User table synced"));

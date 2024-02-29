@@ -4,6 +4,7 @@ import { UpdateOptions } from "sequelize";
 import { Bracelet } from "../models/Bracelet";
 import { IBracelet } from "../types/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
+import { User } from "../models/User";
 
 export class BraceletController {
   public async index(req: Request, res: Response) {
@@ -17,6 +18,9 @@ export class BraceletController {
     const bracelet = await Bracelet.create<Bracelet>({
       heart_rate: params.heart_rate,
       pressure: params.pressure,
+      elderly_id: params.pressure,
+      coordinates: params.pressure,
+      fall: params.pressure,
     })
       .then((bracelet) => res.status(201).json(bracelet))
       .catch((err: ErrorResponde) =>
@@ -26,10 +30,16 @@ export class BraceletController {
 
   public async show(req: Request, res: Response) {
     const BraceletId: number = Number(req.params.id);
+
+    const userNumbers =
+      (await User.count({
+        where: { bracelet_id: BraceletId },
+      })) || 0;
+
     Bracelet.findByPk<Bracelet>(BraceletId)
       .then((bracelet: Bracelet | null) => {
         if (bracelet) {
-          res.json(bracelet);
+          res.json({ bracelet: bracelet, users: userNumbers });
         } else {
           res.status(404).json({ error: "bracelet not found" });
         }
@@ -66,7 +76,6 @@ export class BraceletController {
       where: {
         id: BraceletId,
       },
-      limit: 1,
     };
 
     Bracelet.destroy(options)
@@ -74,5 +83,26 @@ export class BraceletController {
         res.status(204).json({ message: "success", bracelet: bracelet })
       )
       .catch((err: Error) => res.status(400).json({ message: err.message }));
+  }
+
+  // Find all users that belongs to a specified bracelet
+  public async getUsers(req: Request, res: Response) {
+    const bracelet_id: string = req.params.bracelet_id;
+
+    const users = await User.findAll({
+      where: { bracelet_id: bracelet_id },
+    })
+      .then((users) => {
+        if (users.length > 0) {
+          res.status(200).json(users);
+        } else {
+          res
+            .status(404)
+            .json({ message: "No users found for the provided bracelet_id" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json({ message: err.message });
+      });
   }
 }

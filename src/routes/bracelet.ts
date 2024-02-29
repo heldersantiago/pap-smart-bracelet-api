@@ -15,5 +15,8 @@ export class BraceletRoutes {
       .get(this.braceletController.show)
       .put(this.braceletController.update)
       .delete(this.braceletController.destroy);
+    app
+      .route(this.apiUrl + "/users/:bracelet_id")
+      .get(this.braceletController.getUsers);
   }
 }
