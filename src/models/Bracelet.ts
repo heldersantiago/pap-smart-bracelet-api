@@ -7,6 +7,8 @@ export class Bracelet extends Model {
   heart_rate?: number;
   pressure?: number;
   elderly_id?: number;
+  coordinates?: string;
+  fall?: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -31,6 +33,14 @@ Bracelet.init(
       allowNull: true,
       unique: true,
     },
+    coordinates: {
+      type: new DataType.STRING(128),
+      allowNull: true,
+    },
+    fall: {
+      type: new DataType.STRING(128),
+      allowNull: true,
+    },
   },
   {
     tableName: "bracelets",
@@ -38,6 +48,6 @@ Bracelet.init(
   }
 );
 
-Bracelet.sync({ force: true }).then(() => {
-  console.log("bracelets table created sucessfull");
+Bracelet.sync({ alter: true }).then(() => {
+  console.log("bracelets table synced");
 });

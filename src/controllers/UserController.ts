@@ -4,6 +4,7 @@ import { User } from "../models/User";
 import { IUser } from "../types/User";
 import { Error, UpdateOptions } from "sequelize";
 import { ErrorResponde } from "../types/ErrorResponse";
+import { Bracelet } from "../models/Bracelet";
 
 export class UserController {
   public async index(req: Request, res: Response) {
@@ -14,6 +15,15 @@ export class UserController {
 
   public async create(req: Request, res: Response) {
     const params: IUser = req.body;
+
+    const existingBracelet = await Bracelet.findOne({
+      where: { id: params.bracelet_id },
+    });
+
+    if (!existingBracelet) {
+      return res.status(404).json({ error: "bracelet not found" });
+    }
+
     const newUser: any = await User.create<User>({
       name: params.name,
       email: params.email,
