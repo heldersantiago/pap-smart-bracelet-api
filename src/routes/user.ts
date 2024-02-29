@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
-import { UserController } from "../controllers/user";
+import { UserController } from "../controllers/UserController";
 import authorize from "../middlewares/authorize";
+import { BraceletController } from "../controllers/BraceletController";
 
 export class Routes {
   public userController: UserController = new UserController();
+  public braceletController: BraceletController = new BraceletController();
 
   public routes(app: any): void {
     app

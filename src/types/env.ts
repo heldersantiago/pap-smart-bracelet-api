@@ -11,3 +11,7 @@ export interface IEnv {
 
   JWT_SECRET_KEY?: string;
 }
+
+export type TEnv = {
+  id: string;
+};
