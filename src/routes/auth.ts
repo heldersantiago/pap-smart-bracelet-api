@@ -1,4 +1,4 @@
-import { AuthController } from "../controllers/authController";
+import { AuthController } from "../controllers/AuthController";
 
 export class AuthRoutes {
   public authController: AuthController = new AuthController();
