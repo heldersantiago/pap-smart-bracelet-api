@@ -1,33 +1,27 @@
 // lib/controllers/nodes.controller.ts
 import { Request, Response } from "express";
-import { User } from "../models/User";
 import { UpdateOptions } from "sequelize";
 import { Bracelet } from "../models/Bracelet";
 import { IBracelet } from "../types/Bracelet";
+import { ErrorResponde } from "../types/ErrorResponse";
 
 export class BraceletController {
   public async index(req: Request, res: Response) {
     Bracelet.findAll<Bracelet>({})
       .then((bracelets: Array<Bracelet>) => res.json(bracelets))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => res.status(400).json(err));
   }
 
   public async create(req: Request, res: Response) {
     const params: IBracelet = req.body;
-    try {
-      const newUser = await User.create<User>({
-        // name: params.name,
-        // email: params.email,
-        // password: params.password,
-      });
-
-      res.status(201).json(newUser);
-    } catch (err) {
-      console.error(err);
-      res
-        .status(500)
-        .json({ error: "Ooops! We´re in trouble", message: { err } });
-    }
+    const bracelet = await Bracelet.create<Bracelet>({
+      heart_rate: params.heart_rate,
+      pressure: params.pressure,
+    })
+      .then((bracelet) => res.status(201).json(bracelet))
+      .catch((err: ErrorResponde) =>
+        res.status(400).json({ name: err.name, message: err.message })
+      );
   }
 
   public async show(req: Request, res: Response) {
@@ -40,7 +34,7 @@ export class BraceletController {
           res.status(404).json({ error: "bracelet not found" });
         }
       })
-      .catch((err) => res.status(500).json({ error: err }));
+      .catch((err) => res.status(400).json({ error: err }));
   }
 
   public async update(req: Request, res: Response) {
@@ -55,8 +49,14 @@ export class BraceletController {
     };
 
     Bracelet.update(params, update)
-      .then(() => res.status(202).json({ message: "success" }))
-      .catch((err: Error) => res.status(500).json({ message: err.message }));
+      .then((bracelet) => {
+        if (Number(bracelet) > 0) {
+          res.status(202).json({ message: "success", bracelet: bracelet });
+        } else {
+          res.status(404).json({ message: "bracelet not found" });
+        }
+      })
+      .catch((err: Error) => res.status(400).json({ message: err.message }));
   }
 
   public async destroy(req: Request, res: Response) {
@@ -70,7 +70,9 @@ export class BraceletController {
     };
 
     Bracelet.destroy(options)
-      .then(() => res.status(204).json({ message: "success" }))
-      .catch((err: Error) => res.status(500).json({ message: err.message }));
+      .then((bracelet) =>
+        res.status(204).json({ message: "success", bracelet: bracelet })
+      )
+      .catch((err: Error) => res.status(400).json({ message: err.message }));
   }
 }

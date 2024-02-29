@@ -9,7 +9,7 @@ export class UserController {
   public async index(req: Request, res: Response) {
     User.findAll<User>({})
       .then((users: Array<User>) => res.json(users))
-      .catch((err: Error) => res.status(500).json(err.message));
+      .catch((err: Error) => res.status(401).json(err.message));
   }
 
   public async create(req: Request, res: Response) {
@@ -23,7 +23,7 @@ export class UserController {
     })
       .then((user) => res.status(201).json(user))
       .catch((err: ErrorResponde) =>
-        res.status(500).json({ name: err.name, errors: err.message })
+        res.status(400).json({ name: err.name, errors: err.message })
       );
   }
 
@@ -38,7 +38,7 @@ export class UserController {
         }
       })
       .catch((err: ErrorResponde) =>
-        res.status(500).json({ name: err.name, error: err.message })
+        res.status(400).json({ name: err.name, error: err.message })
       );
   }
 
@@ -54,8 +54,14 @@ export class UserController {
     };
 
     User.update(params, update)
-      .then(() => res.status(202).json({ message: "success" }))
-      .catch((err: Error) => res.status(500).json({ message: err.message }));
+      .then((user) => {
+        if (Number(user) > 0) {
+          res.status(202).json({ message: "success", user: user });
+        } else {
+          res.status(404).json({ message: "User not found" });
+        }
+      })
+      .catch((err: Error) => res.status(400).json({ message: err.message }));
   }
 
   public async destroy(req: Request, res: Response) {
@@ -70,6 +76,6 @@ export class UserController {
 
     User.destroy(options)
       .then(() => res.status(204).json({ message: "success" }))
-      .catch((err: Error) => res.status(500).json({ message: err.message }));
+      .catch((err: Error) => res.status(400).json({ message: err.message }));
   }
 }
