@@ -1,18 +1,19 @@
 import { BraceletController } from "../controllers/BraceletController";
 
 export class BraceletRoutes {
+  private readonly apiUrl: string = "/api/v1/bracelets";
   public braceletController: BraceletController = new BraceletController();
 
   public routes(app: any): void {
     app
-      .route("/bracelets")
+      .route(this.apiUrl)
       .get(this.braceletController.index)
       .post(this.braceletController.create);
 
     app
-      .route("/bracelets/:id")
+      .route(this.apiUrl + "/:id")
       .get(this.braceletController.show)
-      .post(this.braceletController.update)
+      .put(this.braceletController.update)
       .delete(this.braceletController.destroy);
   }
 }
