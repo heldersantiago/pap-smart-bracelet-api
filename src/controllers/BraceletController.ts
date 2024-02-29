@@ -4,6 +4,7 @@ import { UpdateOptions } from "sequelize";
 import { Bracelet } from "../models/Bracelet";
 import { IBracelet } from "../types/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
+``;
 import { User } from "../models/User";
 
 export class BraceletController {
@@ -30,10 +31,16 @@ export class BraceletController {
 
   public async show(req: Request, res: Response) {
     const BraceletId: number = Number(req.params.id);
+
+    const userNumbers =
+      (await User.count({
+        where: { bracelet_id: BraceletId },
+      })) || 0;
+
     Bracelet.findByPk<Bracelet>(BraceletId)
       .then((bracelet: Bracelet | null) => {
         if (bracelet) {
-          res.json(bracelet);
+          res.json({ bracelet: bracelet, users: userNumbers });
         } else {
           res.status(404).json({ error: "bracelet not found" });
         }
@@ -70,7 +77,6 @@ export class BraceletController {
       where: {
         id: BraceletId,
       },
-      limit: 1,
     };
 
     Bracelet.destroy(options)

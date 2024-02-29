@@ -81,7 +81,6 @@ export class UserController {
       where: {
         id: UserId,
       },
-      limit: 1,
     };
 
     User.destroy(options)

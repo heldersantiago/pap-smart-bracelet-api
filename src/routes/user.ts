@@ -16,6 +16,6 @@ export class Routes {
       .route(this.apiUrl + "/:id")
       .get(this.userController.show)
       .put(this.userController.update)
-      .delete(this.userController.index);
+      .delete(this.userController.destroy);
   }
 }
