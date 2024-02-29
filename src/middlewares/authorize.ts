@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import path from "path";
 
@@ -9,15 +9,24 @@ dotenv.config({ path: envPATH });
 const authorize = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization!.split(" ")[1];
-    const decode = jwt.verify(token, String(process.env.JWT_SECRET_KEY));
-    req.body.user = decode;
 
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
+
+    const decoded = jwt.verify(token, String(process.env.JWT_SECRET_KEY), {
+      maxAge: "1d", // or use expiresIn: "1d"
+    }) as JwtPayload;
+
+    // Check if the token has expired
+    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+      return res.status(401).json({ message: "Token has expired" });
+    }
+
+    req.body.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "invalid Token" });
+    return res.status(401).json({ message: "Invalid Token" });
   }
 };
 
