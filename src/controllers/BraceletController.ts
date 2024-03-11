@@ -92,7 +92,7 @@ export class BraceletController {
     const users = await User.findAll({
       where: { bracelet_id: bracelet_id },
     })
-      .then((users) => {
+      .then((users: Array<User>) => {
         if (users.length > 0) {
           res.status(200).json(users);
         } else {

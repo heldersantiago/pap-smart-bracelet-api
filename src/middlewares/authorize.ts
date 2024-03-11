@@ -18,7 +18,7 @@ const authorize = (req: Request, res: Response, next: NextFunction) => {
       maxAge: "1d", // or use expiresIn: "1d"
     }) as JwtPayload;
 
-    // Check if the token has expired
+    // Check if the token has esxpired
     if (decoded.exp && decoded.exp * 1000 < Date.now()) {
       return res.status(401).json({ message: "Token has expired" });
     }
