@@ -9,9 +9,9 @@ dotenv.config({ path: envPATH });
 
 // Configuring the environment with the default settings for the application
 const env: IEnv = {
-  DB_HOST: process.env.DB_HOST || "",
-  DB_PORT: parseInt(process.env.DB_PORT || "0", 10),
-  DB_USER: process.env.DB_USER || "",
+  DB_HOST: process.env.DB_HOST || "localhost",
+  DB_PORT: parseInt(process.env.DB_PORT || "3306", 10),
+  DB_USER: process.env.DB_USER || "hps",
   DB_PASSWORD: process.env.DB_PASSWORD || "",
   DB_NAME: process.env.DB_NAME || "",
 };
@@ -24,4 +24,5 @@ export const database = new Sequelize({
   port: env.DB_PORT,
   username: env.DB_USER,
   password: env.DB_PASSWORD,
+  logging: process.env.DEBUG === 'true',
 });
