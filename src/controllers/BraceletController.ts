@@ -61,7 +61,7 @@ export class BraceletController {
     Bracelet.update(params, update)
       .then((bracelet) => {
         if (Number(bracelet) > 0) {
-          res.status(202).json({ message: "success", bracelet: bracelet });
+          res.status(202).json({ message: "success", bracelet: BraceletId });
         } else {
           res.status(404).json({ message: "bracelet not found" });
         }
