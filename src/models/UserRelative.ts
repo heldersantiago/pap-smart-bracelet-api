@@ -7,9 +7,6 @@ export class UserRelative extends Model {
   public id!: number;
   public user_id!: number;
   public user_relative_id!: number;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 // user_relatives migrations
@@ -32,6 +29,7 @@ UserRelative.init(
   {
     tableName: "user_relatives",
     sequelize: database,
+    timestamps: false,
   }
 );
 

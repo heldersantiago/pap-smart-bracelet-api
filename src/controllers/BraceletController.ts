@@ -2,7 +2,6 @@
 import { Request, Response } from "express";
 import { UpdateOptions } from "sequelize";
 import { Bracelet } from "../models/Bracelet";
-import { IBracelet } from "../types/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
 import { User } from "../models/User";
 
@@ -13,20 +12,20 @@ export class BraceletController {
       .catch((err) => res.status(400).json(err));
   }
 
-  public async create(req: Request, res: Response) {
-    const params: IBracelet = req.body;
-    const bracelet = await Bracelet.create<Bracelet>({
-      heart_rate: params.heart_rate,
-      pressure: params.pressure,
-      elderly_id: params.pressure,
-      coordinates: params.pressure,
-      fall: params.pressure,
-    })
-      .then((bracelet) => res.status(201).json(bracelet))
-      .catch((err: ErrorResponde) =>
-        res.status(400).json({ name: err.name, message: err.message })
-      );
-  }
+  // public async create(req: Request, res: Response) {
+  //   const params: Bracelet = req.body;
+  //   const bracelet = await Bracelet.create<Bracelet>({
+  //     heart_rate: params.heart_rate,
+  //     pressure: params.pressure,
+  //     elderly_id: params.pressure,
+  //     coordinates: params.pressure,
+  //     fall: params.pressure,
+  //   })
+  //     .then((bracelet) => res.status(201).json(bracelet))
+  //     .catch((err: ErrorResponde) =>
+  //       res.status(400).json({ name: err.name, message: err.message })
+  //     );
+  // }
 
   public async show(req: Request, res: Response) {
     const BraceletId: number = Number(req.params.id);
@@ -49,7 +48,7 @@ export class BraceletController {
 
   public async update(req: Request, res: Response) {
     const BraceletId = req.params.id;
-    const params: IBracelet = req.body;
+    const params: Bracelet = req.body;
 
     const update: UpdateOptions = {
       where: {

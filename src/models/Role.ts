@@ -6,9 +6,6 @@ import { DataType } from "sequelize-typescript";
 export class Role extends Model {
   public id!: number;
   public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 // roles migrations
@@ -27,6 +24,7 @@ Role.init(
   {
     tableName: "roles",
     sequelize: database,
+    timestamps: false,
   }
 );
 
