@@ -65,7 +65,7 @@ export class BraceletController {
           res.status(404).json({ message: "bracelet not found" });
         }
       })
-      .catch((err: Error) => res.status(400).json({ message: err.message }));
+      .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 
   public async destroy(req: Request, res: Response) {
@@ -81,7 +81,7 @@ export class BraceletController {
       .then((bracelet) =>
         res.status(204).json({ message: "success", bracelet: bracelet })
       )
-      .catch((err: Error) => res.status(400).json({ message: err.message }));
+      .catch((err: Error) => res.status(500).json({ message: err.message }));
   }
 
   // Find all users that belongs to a specified bracelet
@@ -101,7 +101,7 @@ export class BraceletController {
         }
       })
       .catch((err) => {
-        res.status(400).json({ message: err.message });
+        res.status(500).json({ message: err.message });
       });
   }
 }

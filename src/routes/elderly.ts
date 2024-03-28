@@ -12,6 +12,9 @@ export class ElderlyRoutes {
       .route(this.apiUrl)
       .get(this.elderlyController.index)
       .post(this.elderlyController.create);
-    app.route(this.apiUrl + "/:id").get(this.elderlyController.show);
+    app
+      .route(this.apiUrl + "/:id")
+      .get(this.elderlyController.show)
+      .put(this.elderlyController.update);
   }
 }

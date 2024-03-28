@@ -12,7 +12,7 @@ export class Bracelet extends Model {
   latitude?: number;
   longitude?: number;
   altitude?: string;
-  user_id!: string;
+  user_id!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -59,7 +59,6 @@ Bracelet.init(
     user_id: {
       type: DataType.INTEGER.UNSIGNED,
       allowNull: false,
-      unique: true,
     },
   },
   {
