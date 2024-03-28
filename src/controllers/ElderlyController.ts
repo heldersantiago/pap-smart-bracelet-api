@@ -45,7 +45,10 @@ export class ElderlyController {
         id,
       },
     })
-      .then((user) => res.json(user))
+      .then((user) => {
+        if (!user) res.status(404).json({ message: "Elderly not found" });
+        return res.json(user);
+      })
       .catch((err: ErrorResponde) =>
         res.status(400).json({ errors: err.message })
       );
