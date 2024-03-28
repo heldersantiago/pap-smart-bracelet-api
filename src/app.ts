@@ -1,7 +1,7 @@
 // lib/app.ts
 import express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/user";
+import { ElderlyRoutes } from "./routes/elderly";
 import { AuthRoutes } from "./routes/auth";
 import { BraceletRoutes } from "./routes/bracelet";
 
@@ -10,14 +10,14 @@ import { BraceletRoutes } from "./routes/bracelet";
 
 class App {
   public app: express.Application;
-  public routes: Routes = new Routes();
+  public elderlyRoutes: ElderlyRoutes = new ElderlyRoutes();
   public authRoutes: AuthRoutes = new AuthRoutes();
   public braceletRoutes: BraceletRoutes = new BraceletRoutes();
 
   constructor() {
     this.app = express();
     this.config();
-    this.routes.routes(this.app);
+    this.elderlyRoutes.routes(this.app);
     this.authRoutes.routes(this.app);
     this.braceletRoutes.routes(this.app);
   }

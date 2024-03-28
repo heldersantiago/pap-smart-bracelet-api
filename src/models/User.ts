@@ -39,6 +39,7 @@ User.init(
     phone: {
       type: DataType.STRING(128),
       allowNull: false,
+      unique: true,
     },
     role_id: {
       type: DataType.INTEGER.UNSIGNED,
