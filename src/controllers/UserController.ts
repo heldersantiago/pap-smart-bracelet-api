@@ -28,8 +28,8 @@ export class UserController {
       name: params.name,
       email: params.email,
       password: params.password,
-      bracelet_id: params.bracelet_id,
-      relative_tie: params.relative_tie,
+      bracelet_id: Number(params.bracelet_id),
+      relative_tie: Number(params.relative_tie),
     })
       .then((user) => res.status(201).json(user))
       .catch((err: ErrorResponde) =>

@@ -1,14 +1,15 @@
 // lib/models/node.model.ts
-import { Model, DataTypes } from "sequelize";
+import { Model } from "sequelize";
 import { database } from "../config/database";
+import { DataType } from "sequelize-typescript";
 
 export class User extends Model {
   public id!: number;
   public name!: string;
   public email!: string;
   public password!: string;
-  public bracelet_id!: string;
-  public relative_tie!: string;
+  public phone!: string;
+  public role_id!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -18,29 +19,29 @@ export class User extends Model {
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataType.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
     name: {
-      type: new DataTypes.STRING(128),
+      type: DataType.STRING(128),
       allowNull: false,
     },
     email: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
+      type: DataType.STRING(128),
+      allowNull: true,
       unique: true,
     },
     password: {
-      type: new DataTypes.STRING(128),
+      type: DataType.STRING(128),
       allowNull: false,
     },
-    bracelet_id: {
-      type: new DataTypes.STRING(128),
+    phone: {
+      type: DataType.STRING(128),
       allowNull: false,
     },
-    relative_tie: {
-      type: new DataTypes.STRING(128),
+    role_id: {
+      type: DataType.INTEGER.UNSIGNED,
       allowNull: false,
     },
   },
