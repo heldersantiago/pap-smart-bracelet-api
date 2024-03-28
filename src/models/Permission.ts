@@ -6,9 +6,6 @@ import { DataType } from "sequelize-typescript";
 export class Permission extends Model {
   public id!: number;
   public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 // permissions migrations
@@ -27,6 +24,7 @@ Permission.init(
   {
     tableName: "permissions",
     sequelize: database,
+    timestamps: false,
   }
 );
 

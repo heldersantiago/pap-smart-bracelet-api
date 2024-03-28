@@ -8,7 +8,7 @@ export class BraceletRoutes {
     app
       .route(this.apiUrl)
       .get(this.braceletController.index)
-      .post(this.braceletController.create);
+      .post(this.braceletController.show);
 
     app
       .route(this.apiUrl + "/:id")
