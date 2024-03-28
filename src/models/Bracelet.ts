@@ -4,11 +4,15 @@ import { DataType } from "sequelize-typescript";
 
 export class Bracelet extends Model {
   id!: number;
+  device_id!: string;
   heart_rate?: number;
-  pressure?: number;
-  elderly_id?: number;
-  coordinates?: string;
-  fall?: string;
+  blood_pressure?: number;
+  blood_oxygen?: number;
+  body_temperature?: number;
+  latitude?: number;
+  longitude?: number;
+  altitude?: string;
+  user_id!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -20,31 +24,47 @@ Bracelet.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    device_id: {
+      type: DataType.STRING(128),
+      allowNull: false,
+    },
     heart_rate: {
-      type: DataType.DOUBLE.UNSIGNED,
+      type: DataType.DOUBLE,
       allowNull: true,
     },
-    pressure: {
-      type: DataType.DOUBLE.UNSIGNED,
+    blood_pressure: {
+      type: DataType.DOUBLE,
       allowNull: true,
     },
-    elderly_id: {
-      type: DataType.DOUBLE.UNSIGNED,
+    blood_oxygen: {
+      type: DataType.DOUBLE,
       allowNull: true,
+    },
+    body_temperature: {
+      type: DataType.DOUBLE,
+      allowNull: true,
+    },
+    latitude: {
+      type: DataType.DOUBLE,
+      allowNull: true,
+    },
+    longitude: {
+      type: DataType.DOUBLE,
+      allowNull: true,
+    },
+    altitude: {
+      type: DataType.DOUBLE,
+      allowNull: true,
+    },
+    user_id: {
+      type: DataType.INTEGER.UNSIGNED,
+      allowNull: false,
       unique: true,
-    },
-    coordinates: {
-      type: new DataType.STRING(128),
-      allowNull: true,
-    },
-    fall: {
-      type: new DataType.STRING(128),
-      allowNull: true,
     },
   },
   {
     tableName: "bracelets",
-    sequelize: database, // this bit is important
+    sequelize: database,
   }
 );
 

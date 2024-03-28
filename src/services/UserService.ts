@@ -14,13 +14,4 @@ export class UserService implements IUserService {
     }
     return user;
   }
-  
-  //   public async updateUser(user: IUser, options: UpdateOptions): Promise<IUser> {
-  //     const updatedUser = await User.update(user, options);
-  //     return updatedUser;
-  //   }
-  //   public async deleteUser(id: string): Promise<IUser> {
-  //     const deletedUser = await User.destroy({ where: { id } });
-  //     return deletedUser;
-  //   }
 }

@@ -10,7 +10,7 @@ export class UserController {
   public async index(req: Request, res: Response) {
     User.findAll<User>({})
       .then((users: Array<User>) => res.json(users))
-      .catch((err: Error) => res.status(401).json(err.message));
+      .catch((err: Error) => res.status(401).json({ errors: err.message }));
   }
 
   public async create(req: Request, res: Response) {
@@ -21,19 +21,19 @@ export class UserController {
     });
 
     if (!existingBracelet) {
-      return res.status(404).json({ error: "bracelet not found" });
+      return res.status(404).json({ errors: "bracelet not found" });
     }
 
     const newUser: any = await User.create<User>({
       name: params.name,
       email: params.email,
       password: params.password,
-      bracelet_id: params.bracelet_id,
-      relative_tie: params.relative_tie,
+      bracelet_id: Number(params.bracelet_id),
+      relative_tie: Number(params.relative_tie),
     })
       .then((user) => res.status(201).json(user))
       .catch((err: ErrorResponde) =>
-        res.status(400).json({ name: err.name, errors: err.message })
+        res.status(400).json({ errors: err.message })
       );
   }
 
@@ -44,11 +44,11 @@ export class UserController {
         if (user) {
           res.json(user);
         } else {
-          res.status(404).json({ error: "user not found" });
+          res.status(404).json({ errors: "user not found" });
         }
       })
       .catch((err: ErrorResponde) =>
-        res.status(400).json({ name: err.name, error: err.message })
+        res.status(400).json({ errors: err.message })
       );
   }
 
@@ -68,10 +68,10 @@ export class UserController {
         if (Number(user) > 0) {
           res.status(202).json({ message: "success", user: user });
         } else {
-          res.status(404).json({ message: "User not found" });
+          res.status(404).json({ errors: "User not found" });
         }
       })
-      .catch((err: Error) => res.status(400).json({ message: err.message }));
+      .catch((err: Error) => res.status(400).json({ errors: err.message }));
   }
 
   public async destroy(req: Request, res: Response) {
@@ -85,6 +85,6 @@ export class UserController {
 
     User.destroy(options)
       .then(() => res.status(204).json({ message: "success" }))
-      .catch((err: Error) => res.status(400).json({ message: err.message }));
+      .catch((err: Error) => res.status(400).json({ errors: err.message }));
   }
 }
