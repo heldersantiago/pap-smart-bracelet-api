@@ -36,4 +36,18 @@ export class ElderlyController {
         res.status(400).json({ errors: err.message })
       );
   }
+
+  public async show(req: Request, res: Response) {
+    const { id } = req.params;
+
+    User.findOne<User>({
+      where: {
+        id,
+      },
+    })
+      .then((user) => res.json(user))
+      .catch((err: ErrorResponde) =>
+        res.status(400).json({ errors: err.message })
+      );
+  }
 }
