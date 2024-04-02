@@ -5,6 +5,7 @@ import { ElderlyRoutes } from "./routes/elderly";
 import { AuthRoutes } from "./routes/auth";
 import { BraceletRoutes } from "./routes/bracelet";
 import { RelativeRoutes } from "./routes/relative";
+import { RolePermissionRoutes } from "./routes/rolePermission";
 
 // import swaggerUi from "swagger-ui-express";
 // import { swaggerDocs } from "./config/swaggerConfig"; // Import your Swagger configuration
@@ -15,6 +16,7 @@ class App {
   public authRoutes: AuthRoutes = new AuthRoutes();
   public braceletRoutes: BraceletRoutes = new BraceletRoutes();
   public relativesRoutes: RelativeRoutes = new RelativeRoutes();
+  public rolesPermissionsRoutes: RolePermissionRoutes = new RolePermissionRoutes();
 
   constructor() {
     this.app = express();
@@ -23,6 +25,7 @@ class App {
     this.authRoutes.routes(this.app);
     this.braceletRoutes.routes(this.app);
     this.relativesRoutes.routes(this.app);
+    this.rolesPermissionsRoutes.routes(this.app);
   }
 
   private config(): void {
