@@ -6,6 +6,7 @@ import { ErrorResponde } from "../types/ErrorResponse";
 
 import { roles } from "../enums/roles";
 import { Status } from "../enums/status";
+import { Bracelet } from "../models/Bracelet";
 
 export class ElderlyController {
   public async index(req: Request, res: Response) {
@@ -22,6 +23,18 @@ export class ElderlyController {
 
   public async create(req: Request, res: Response) {
     const params: User = req.body;
+
+    const already_exist_phone_number = await User.findOne({
+      where: {
+        phone: params.phone,
+      },
+    });
+
+    if (already_exist_phone_number) {
+      return res.status(Status.BAD_REQUEST).json({
+        errors: "Elderly with this phone number already exist",
+      });
+    }
 
     if (params.role_id != roles.elderly) {
       return res
@@ -47,19 +60,28 @@ export class ElderlyController {
   public async show(req: Request, res: Response) {
     const { id } = req.params;
 
-    User.findOne<User>({
+    const bracelet = await Bracelet.findOne<Bracelet>({
+      where: {
+        user_id: id,
+      },
+    });
+
+    const user = await User.findOne<User>({
       where: {
         id,
       },
-    })
-      .then((user) => {
-        if (!user)
-          res.status(Status.NOT_FOUND).json({ message: "Elderly not found" });
-        return res.json(user);
-      })
-      .catch((err: ErrorResponde) =>
-        res.status(Status.INTERNAL_SERVER_ERROR).json({ errors: err.message })
-      );
+    });
+
+    if (!user) {
+      return res.status(Status.NOT_FOUND).json({
+        errors: "User not found",
+      });
+    }
+
+    return res.status(Status.OK).json({
+      user: user,
+      bracelet: bracelet ?? "No Bracelet yet",
+    });
   }
 
   public async update(req: Request, res: Response) {
@@ -76,7 +98,7 @@ export class ElderlyController {
       .then((user) => {
         if (!user)
           res.status(Status.NOT_FOUND).json({ message: "elderly not found" });
-        return res.json(user);
+        return res.json({ message: "success" });
       })
       .catch((err: Error) =>
         res.status(Status.INTERNAL_SERVER_ERROR).json({ errors: err.message })

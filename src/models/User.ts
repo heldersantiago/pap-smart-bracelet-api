@@ -29,7 +29,6 @@ User.init(
     email: {
       type: DataType.STRING(128),
       allowNull: true,
-      unique: true,
     },
     password: {
       type: DataType.STRING(128),
@@ -38,7 +37,6 @@ User.init(
     phone: {
       type: DataType.STRING(128),
       allowNull: false,
-      unique: true,
     },
     role_id: {
       type: DataType.INTEGER.UNSIGNED,

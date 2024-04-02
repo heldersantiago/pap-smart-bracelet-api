@@ -27,7 +27,6 @@ Bracelet.init(
     device_id: {
       type: DataType.STRING(128),
       allowNull: false,
-      unique: true,
     },
     heart_rate: {
       type: DataType.DOUBLE,
@@ -60,7 +59,6 @@ Bracelet.init(
     user_id: {
       type: DataType.INTEGER.UNSIGNED,
       allowNull: false,
-      unique: true,
     },
   },
   {
