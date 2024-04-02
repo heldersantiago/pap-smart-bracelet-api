@@ -75,11 +75,11 @@ export class ElderlyController {
     User.update(params, update)
       .then((user) => {
         if (!user)
-          res.status(Status.NOT_FOUND).json({ message: "Elderly not found" });
+          res.status(Status.NOT_FOUND).json({ message: "elderly not found" });
         return res.json(user);
       })
       .catch((err: Error) =>
-        res.status(Status.INTERNAL_SERVER_ERROR).json({ message: err.message })
+        res.status(Status.INTERNAL_SERVER_ERROR).json({ errors: err.message })
       );
   }
 }

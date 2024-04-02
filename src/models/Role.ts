@@ -1,4 +1,3 @@
-// lib/models/node.model.ts
 import { Model } from "sequelize";
 import { database } from "../config/database";
 import { DataType } from "sequelize-typescript";

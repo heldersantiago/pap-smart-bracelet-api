@@ -16,12 +16,12 @@ export class AuthController {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
-        return res.status(401).json({ message: "Invalid credentials" });
+        return res.status(401).json({ errors: "Invalid credentials" });
       }
 
       const isPasswordMatched = user?.password === password;
       if (!isPasswordMatched) {
-        return res.status(401).json({ message: "Invalid credentials" });
+        return res.status(401).json({ errors: "Invalid credentials" });
       }
 
       const token = jwt.sign(

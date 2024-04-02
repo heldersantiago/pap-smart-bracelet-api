@@ -1,9 +1,7 @@
-// lib/controllers/nodes.controller.ts
-import { Request, Response } from "express";
 import { UpdateOptions } from "sequelize";
+import { Request, Response } from "express";
 import { Bracelet } from "../models/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
-import { User } from "../models/User";
 
 export class BraceletController {
   public async index(req: Request, res: Response) {
@@ -12,38 +10,30 @@ export class BraceletController {
       .catch((err) => res.status(400).json(err));
   }
 
-  // public async create(req: Request, res: Response) {
-  //   const params: Bracelet = req.body;
-  //   const bracelet = await Bracelet.create<Bracelet>({
-  //     heart_rate: params.heart_rate,
-  //     pressure: params.pressure,
-  //     elderly_id: params.pressure,
-  //     coordinates: params.pressure,
-  //     fall: params.pressure,
-  //   })
-  //     .then((bracelet) => res.status(201).json(bracelet))
-  //     .catch((err: ErrorResponde) =>
-  //       res.status(400).json({ name: err.name, message: err.message })
-  //     );
-  // }
+  public async create(req: Request, res: Response) {
+    const params: Bracelet = req.body;
+    const bracelet = await Bracelet.create<Bracelet>({
+      device_id: params.device_id,
+      user_id: params.user_id,
+    })
+      .then((bracelet) => res.status(201).json(bracelet))
+      .catch((err: ErrorResponde) =>
+        res.status(400).json({ name: err.name, errors: err.message })
+      );
+  }
 
   public async show(req: Request, res: Response) {
     const BraceletId: number = Number(req.params.id);
 
-    const userNumbers =
-      (await User.count({
-        where: { bracelet_id: BraceletId },
-      })) || 0;
-
     Bracelet.findByPk<Bracelet>(BraceletId)
       .then((bracelet: Bracelet | null) => {
         if (bracelet) {
-          res.json({ bracelet: bracelet, users: userNumbers });
+          res.json({ message: bracelet });
         } else {
           res.status(404).json({ error: "bracelet not found" });
         }
       })
-      .catch((err) => res.status(400).json({ error: err }));
+      .catch((err) => res.status(400).json({ errors: err }));
   }
 
   public async update(req: Request, res: Response) {
@@ -60,48 +50,11 @@ export class BraceletController {
     Bracelet.update(params, update)
       .then((bracelet) => {
         if (Number(bracelet) > 0) {
-          res.status(202).json({ message: "success", bracelet: BraceletId });
+          res.status(202).json({ message: "success" });
         } else {
           res.status(404).json({ message: "bracelet not found" });
         }
       })
       .catch((err: Error) => res.status(500).json({ message: err.message }));
-  }
-
-  public async destroy(req: Request, res: Response) {
-    const BraceletId = req.params.id;
-
-    const options: UpdateOptions = {
-      where: {
-        id: BraceletId,
-      },
-    };
-
-    Bracelet.destroy(options)
-      .then((bracelet) =>
-        res.status(204).json({ message: "success", bracelet: bracelet })
-      )
-      .catch((err: Error) => res.status(500).json({ message: err.message }));
-  }
-
-  // Find all users that belongs to a specified bracelet
-  public async getUsers(req: Request, res: Response) {
-    const bracelet_id: string = req.params.bracelet_id;
-
-    const users = await User.findAll({
-      where: { bracelet_id: bracelet_id },
-    })
-      .then((users: Array<User>) => {
-        if (users.length > 0) {
-          res.status(200).json(users);
-        } else {
-          res
-            .status(404)
-            .json({ message: "No users found for the provided bracelet_id" });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ message: err.message });
-      });
   }
 }
