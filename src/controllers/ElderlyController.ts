@@ -1,8 +1,6 @@
-// lib/controllers/nodes.controller.ts
 import { Request, Response } from "express";
 import { User } from "../models/User";
 import { Error, UpdateOptions } from "sequelize";
-import { ErrorResponde } from "../types/ErrorResponse";
 
 import { roles } from "../enums/roles";
 import { Status } from "../enums/status";
