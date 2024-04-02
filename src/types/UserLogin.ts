@@ -1,4 +1,5 @@
 export interface IUserLogin {
-  email: string;
+  email?: string;
   password: string;
+  device_id?: string;
 }
