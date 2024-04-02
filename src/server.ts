@@ -1,5 +1,11 @@
-// lib/server.ts
+import * as dotenv from "dotenv";
+import path = require("path");
 import app from "./app";
-const PORT = process.env.PORT || 3001;
+
+// Setting up the environment
+const envPATH = path.resolve(__dirname, "../.env");
+dotenv.config({ path: envPATH });
+
+const PORT = Number(process.env.PORT) || 3001;
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
