@@ -1,4 +1,3 @@
-// lib/app.ts
 import express from "express";
 import * as bodyParser from "body-parser";
 import { ElderlyRoutes } from "./routes/elderly";
@@ -7,8 +6,6 @@ import { BraceletRoutes } from "./routes/bracelet";
 import { RelativeRoutes } from "./routes/relative";
 import { RolePermissionRoutes } from "./routes/rolePermission";
 
-// import swaggerUi from "swagger-ui-express";
-// import { swaggerDocs } from "./config/swaggerConfig"; // Import your Swagger configuration
 
 class App {
   public app: express.Application;
@@ -16,7 +13,8 @@ class App {
   public authRoutes: AuthRoutes = new AuthRoutes();
   public braceletRoutes: BraceletRoutes = new BraceletRoutes();
   public relativesRoutes: RelativeRoutes = new RelativeRoutes();
-  public rolesPermissionsRoutes: RolePermissionRoutes = new RolePermissionRoutes();
+  public rolesPermissionsRoutes: RolePermissionRoutes =
+    new RolePermissionRoutes();
 
   constructor() {
     this.app = express();
@@ -32,7 +30,6 @@ class App {
     this.app.use(express.json());
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    // this.app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
   }
 }
 

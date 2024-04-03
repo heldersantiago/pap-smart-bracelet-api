@@ -1,0 +1,15 @@
+ElderlyUser:
+  type: object
+  properties:
+    name:
+      type: string
+      description: The name of the elderly user.
+    age:
+      type: integer
+      description: The age of the elderly user.
+    address:
+      type: string
+      description: The address of the elderly user.
+  required:
+    - name
+    - age
