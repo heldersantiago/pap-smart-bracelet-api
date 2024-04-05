@@ -9,7 +9,7 @@ export const swaggerOptions: SwaggerOptions = {
         "SMSI API Documentation is a Health Management Eldelies System",
       contact: {
         name: "nexus",
-        email:"heldersantiago273@gmail.com"
+        email: "heldersantiago273@gmail.com",
       },
       version: "1",
     },
