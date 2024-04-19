@@ -65,6 +65,5 @@ export class ElderlyRoutes {
     app
       .route(this.apiUrl + "/:id")
       .get(this.elderlyController.show)
-      .put(this.elderlyController.update);
   }
 }

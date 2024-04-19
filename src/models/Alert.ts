@@ -3,13 +3,11 @@ import { database } from "../config/database";
 import { DataType } from "sequelize-typescript";
 
 export class Alert extends Model {
-  public id!: number;
+  public id?: number;
   public title!: string;
   public description!: string;
   public type!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public isActive!: boolean;
 }
 
 // alerts migrations
@@ -32,10 +30,15 @@ Alert.init(
       type: DataType.STRING(20),
       allowNull: false,
     },
+    isActive: {
+      type: DataType.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     tableName: "alerts",
     sequelize: database,
+    timestamps: true,
   }
 );
 

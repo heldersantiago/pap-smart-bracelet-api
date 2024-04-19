@@ -6,6 +6,19 @@ import { UserRelative } from "../models/UserRelative";
 import { UserPayload } from "../types/userPayload";
 
 export class RelativeController {
+
+  public async index(req: Request, res: Response) {
+    User.findAll<User>({
+      where: {
+        role_id: roles.relative,
+      },
+    })
+      .then((users: Array<User>) => res.json(users))
+      .catch((err: Error) =>
+        res.status(Status.INTERNAL_SERVER_ERROR).json({ errors: err.message })
+      );
+  }
+
   public async create(req: Request, res: Response) {
     const user_params: User = req.body;
     const relative_params: UserPayload = req.body.user;
@@ -18,14 +31,14 @@ export class RelativeController {
 
     if (already_exist_phone_number) {
       return res.status(Status.BAD_REQUEST).json({
-        errors: "Elderly with this phone number already exist",
+        errors: "relative with this phone number already exist",
       });
     }
 
-    if (user_params.role_id != roles.elderly) {
+    if (user_params.role_id != roles.relative) {
       return res
         .status(Status.BAD_REQUEST)
-        .json({ message: "Invalid role for elderly" });
+        .json({ message: "Invalid role for relative" });
     }
 
     try {

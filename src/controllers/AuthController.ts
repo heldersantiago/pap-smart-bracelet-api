@@ -37,7 +37,9 @@ export class AuthController {
 
       const isPasswordMatched = user?.password === password;
       if (!isPasswordMatched) {
-        return res.status(401).json({ errors: "Invalid credentials" });
+        return res
+          .status(Status.BAD_REQUEST)
+          .json({ errors: "Invalid credentials" });
       }
 
       const token = jwt.sign(
@@ -48,7 +50,7 @@ export class AuthController {
         }
       );
 
-      return res.status(200).json({
+      return res.status(Status.OK).json({
         token: token,
       });
     } catch (err) {
