@@ -81,25 +81,4 @@ export class ElderlyController {
       bracelet: bracelet ?? "No Bracelet yet",
     });
   }
-
-  public async update(req: Request, res: Response) {
-    const { id } = req.params;
-    const params: User = req.body;
-
-    const update: UpdateOptions = {
-      where: {
-        id,
-      },
-    };
-
-    User.update(params, update)
-      .then((user) => {
-        if (!user)
-          res.status(Status.NOT_FOUND).json({ message: "elderly not found" });
-        return res.json({ message: "success" });
-      })
-      .catch((err: Error) =>
-        res.status(Status.INTERNAL_SERVER_ERROR).json({ errors: err.message })
-      );
-  }
 }

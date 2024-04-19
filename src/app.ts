@@ -5,12 +5,14 @@ import { AuthRoutes } from "./routes/auth";
 import { BraceletRoutes } from "./routes/bracelet";
 import { RelativeRoutes } from "./routes/relative";
 import { RolePermissionRoutes } from "./routes/rolePermission";
+import { UserRoutes } from "./routes/user";
 
 
 class App {
   public app: express.Application;
   public elderlyRoutes: ElderlyRoutes = new ElderlyRoutes();
   public authRoutes: AuthRoutes = new AuthRoutes();
+  public userRoutes: UserRoutes = new UserRoutes();
   public braceletRoutes: BraceletRoutes = new BraceletRoutes();
   public relativesRoutes: RelativeRoutes = new RelativeRoutes();
   public rolesPermissionsRoutes: RolePermissionRoutes =
@@ -22,6 +24,7 @@ class App {
     this.elderlyRoutes.routes(this.app);
     this.authRoutes.routes(this.app);
     this.braceletRoutes.routes(this.app);
+    this.userRoutes.routes(this.app);
     this.relativesRoutes.routes(this.app);
     this.rolesPermissionsRoutes.routes(this.app);
   }
