@@ -8,7 +8,10 @@ export class HealthAnalisisService {
   private temperatureThresholds = HealthThreshold.getTemperatureThresholds();
   private heartRateThresholds = HealthThreshold.getHeartRateThresholds();
 
-  public constructor(private alertService: AlertService) {}
+  public constructor(
+    private alertService: AlertService,
+    private braceletId: number
+  ) {}
 
   public async analyzeBloodPressure(bloodPressure: number) {
     let alertData;
@@ -46,7 +49,7 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert);
+      await this.alertService.createAlert(alertData as Alert, this.braceletId);
     }
   }
 
@@ -87,7 +90,7 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert);
+      await this.alertService.createAlert(alertData as Alert, this.braceletId);
     }
   }
 
@@ -128,7 +131,7 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert);
+      await this.alertService.createAlert(alertData as Alert, this.braceletId);
     }
   }
 

@@ -82,10 +82,13 @@ export class BraceletController {
   }
 
   public async update(req: Request, res: Response) {
-    const alertService = new AlertService();
-    const healthAnalyzer = new HealthAnalisisService(alertService);
-    const BraceletId = req.params.id;
     const params: Bracelet = req.body;
+    const BraceletId = req.params.id;
+    const alertService = new AlertService();
+    const healthAnalyzer = new HealthAnalisisService(
+      alertService,
+      Number(BraceletId)
+    );
 
     const update: UpdateOptions = {
       where: {
