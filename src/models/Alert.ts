@@ -7,6 +7,7 @@ export class Alert extends Model {
   public title!: string;
   public description!: string;
   public type!: string;
+  public braceletId!: number;
   public isActive!: boolean;
 }
 
@@ -32,6 +33,10 @@ Alert.init(
     },
     isActive: {
       type: DataType.BOOLEAN,
+      allowNull: false,
+    },
+    braceletId: {
+      type: DataType.INTEGER,
       allowNull: false,
     },
   },
