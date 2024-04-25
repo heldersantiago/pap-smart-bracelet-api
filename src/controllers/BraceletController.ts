@@ -4,6 +4,8 @@ import { Bracelet } from "../models/Bracelet";
 import { ErrorResponde } from "../types/ErrorResponse";
 import { Status } from "../enums/status";
 import { User } from "../models/User";
+import { HealthAnalisisService } from "../services/HealthAnalisisService";
+import { AlertService } from "../services/AlertService";
 
 export class BraceletController {
   public async index(req: Request, res: Response) {
@@ -80,8 +82,13 @@ export class BraceletController {
   }
 
   public async update(req: Request, res: Response) {
-    const BraceletId = req.params.id;
     const params: Bracelet = req.body;
+    const BraceletId = req.params.id;
+    const alertService = new AlertService();
+    const healthAnalyzer = new HealthAnalisisService(
+      alertService,
+      Number(BraceletId)
+    );
 
     const update: UpdateOptions = {
       where: {
@@ -89,6 +96,11 @@ export class BraceletController {
       },
       limit: 1,
     };
+    if (healthAnalyzer) {
+      healthAnalyzer.analyzeBloodPressure(params.blood_pressure! as number);
+      healthAnalyzer.analyzeHeartRate(params.heart_rate! as number);
+      healthAnalyzer.analyzeTemperature(params.body_temperature! as number);
+    }
 
     Bracelet.update(params, update)
       .then((bracelet) => {
