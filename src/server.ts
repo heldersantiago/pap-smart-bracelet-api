@@ -1,5 +1,18 @@
-// lib/server.ts
-import app from "./app";
-const PORT = 80 || 3001;
+import * as dotenv from "dotenv";
+import path = require("path");
+import app from "./app"
+import swaggerUi from "swagger-ui-express";
+import { swaggerOptions } from "./config/swagger";
+import swaggerJSDoc = require("swagger-jsdoc");
 
-app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
+// Setting up the environment
+const envPATH = path.resolve(__dirname, "../.env");
+dotenv.config({ path: envPATH });
+
+const PORT =80 || 3001;
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.listen(PORT, () => console.info(`API app listening on port ${PORT}!`))

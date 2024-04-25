@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { IUserLogin } from "../types/UserLogin";
 import * as dotenv from "dotenv";
 import path from "path";
-import { Bracelet } from "../models/Bracelet";
 import { Status } from "../enums/status";
 
 const envPATH = path.resolve(__dirname, "../../.env");
@@ -13,35 +12,27 @@ dotenv.config({ path: envPATH });
 export class AuthController {
   public async login(req: Request, res: Response) {
     try {
-      const { email, password, device_id }: IUserLogin = req.body;
+      const { email, password, phone }: IUserLogin = req.body;
+      let whereCondition: any = {};
 
-      const bracelet = await Bracelet.findOne<Bracelet>({
-        where: {
-          device_id: device_id,
-        },
-      });
-
-      if (!bracelet) {
+      if (email) {
+        whereCondition.email = email;
+      } else if (phone) {
+        whereCondition.phone = phone;
+      } else {
         return res.status(Status.BAD_REQUEST).json({
-          errors: "Invalid Credentials",
+          errors: "Email or phone number is required",
         });
       }
 
       const user = await User.findOne<User>({
-        where: {
-          id: bracelet!.user_id,
-          email: email,
-        },
+        where: whereCondition,
       });
 
       if (!user) {
-        return res.status(Status.BAD_REQUEST).json({
-          errors: "Invalid Credentials",
-        });
-      }
-
-      if (!user) {
-        return res.status(401).json({ errors: "Invalid credentials" });
+        return res
+          .status(Status.BAD_REQUEST)
+          .json({ errors: "Invalid credentials" });
       }
 
       const isPasswordMatched = user?.password === password;
