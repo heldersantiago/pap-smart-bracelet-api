@@ -6,8 +6,8 @@ export class RelativeRoutes {
   public relativeController: RelativeController = new RelativeController();
 
   public routes(app: any): void {
-
-    app.route(this.apiUrl).get(this.relativeController.index);
-    app.route(this.apiUrl).post(authorize, this.relativeController.create);
+    app.get(this.apiUrl + "/all", this.relativeController.index);
+    app.route(this.apiUrl + "/:relative_id").post(this.relativeController.create);
+    app.route(this.apiUrl + "/:id").get(this.relativeController.show);
   }
 }
