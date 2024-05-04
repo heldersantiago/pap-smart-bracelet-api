@@ -53,10 +53,16 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      // TwilioService.sendSMS(
-      //   `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-      //   "+244927871797"
-      // );
+      if (alertData.type == "Crítico") {
+        TwilioService.makeCall(
+          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+          "+244927871797"
+        );
+      }
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 
@@ -98,10 +104,16 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      // TwilioService.sendSMS(
-      //   `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-      //   "+244927871797"
-      // );
+      if (alertData.type == "Crítico") {
+        TwilioService.makeCall(
+          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+          "+244927871797"
+        );
+      }
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 
@@ -143,10 +155,16 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      // TwilioService.sendSMS(
-      //   `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-      //   "+244927871797"
-      // );
+      if (alertData.type == "Crítico") {
+        TwilioService.makeCall(
+          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+          "+244927871797"
+        );
+      }
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 
