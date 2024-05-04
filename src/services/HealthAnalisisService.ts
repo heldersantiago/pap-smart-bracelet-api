@@ -1,6 +1,7 @@
 import { Alert } from "../models/Alert";
 import { AlertService } from "./AlertService";
 import { HealthThreshold } from "./HealthThresholds";
+import { TwilioService } from "./TwilioService";
 
 export class HealthAnalisisService {
   private bloodPressureThresholds =
@@ -11,7 +12,9 @@ export class HealthAnalisisService {
   public constructor(
     private alertService: AlertService,
     private braceletId: number
-  ) {}
+  ) {
+    TwilioService.initialize();
+  }
 
   public async analyzeBloodPressure(bloodPressure: number) {
     let alertData;
@@ -50,6 +53,10 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 
@@ -91,6 +98,10 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 
@@ -132,6 +143,10 @@ export class HealthAnalisisService {
 
     if (alertData) {
       await this.alertService.createAlert(alertData as Alert, this.braceletId);
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        "+244927871797"
+      );
     }
   }
 

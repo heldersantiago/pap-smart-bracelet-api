@@ -61,9 +61,8 @@ export class ElderlyRoutes {
      *         description: Internal server error
      */
 
+    app.get(this.apiUrl + "/relatives/:id", this.elderlyController.getRelatives);
     app.post(this.apiUrl, this.elderlyController.create);
-    app
-      .route(this.apiUrl + "/:id")
-      .get(this.elderlyController.show)
+    app.route(this.apiUrl + "/:id").get(this.elderlyController.show);
   }
 }

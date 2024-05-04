@@ -5,6 +5,7 @@ import { Error, UpdateOptions } from "sequelize";
 import { roles } from "../enums/roles";
 import { Status } from "../enums/status";
 import { Bracelet } from "../models/Bracelet";
+import { UserRelative } from "../models/UserRelative";
 
 export class ElderlyController {
   public async index(req: Request, res: Response) {
@@ -74,11 +75,25 @@ export class ElderlyController {
       return res.status(Status.NOT_FOUND).json({
         errors: "User not found",
       });
-    }
+    }1
 
     return res.status(Status.OK).json({
       user: user,
       bracelet: bracelet ?? "No Bracelet yet",
     });
+  }
+
+  public async getRelatives(req: Request, res: Response) {
+    let users: any[] = [];
+    const { id } = req.params;
+    const user_relatives = UserRelative.findAll<UserRelative>({
+      where: {
+        user_relative_id: id,
+      },
+    });
+    for(var d in user_relatives){
+      users.push(d);
+    }
+    return res.json({ message: users });
   }
 }
