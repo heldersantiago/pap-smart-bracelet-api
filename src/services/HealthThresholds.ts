@@ -8,7 +8,7 @@ export class HealthThreshold {
       diastolic: { min: 60, max: 80 },
     },
     critical: {
-      systolic: { min: 60, max: 90 },
+      systolic: { min: 60, max: 150 },
       diastolic: { min: 40, max: 60 },
     },
   };
@@ -19,8 +19,8 @@ export class HealthThreshold {
   };
 
   private static heartRateThresholds = {
-    normal: { min: 60, max: 100 },
-    critical: { min: 50, max: 120 },
+    normal: { min: 60, max: 120 },
+    critical: { min: 50, max: 150 },
   };
 
   public static getBloodPressureThresholds(): any {
