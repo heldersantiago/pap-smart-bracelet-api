@@ -4,14 +4,18 @@ export class HealthThreshold {
 
   private static bloodPressureThresholds = {
     normal: {
-      systolic: { min: 90, max: 120 },
+      systolic: { min: 90, max: 120 }, // 
       diastolic: { min: 60, max: 80 },
     },
     critical: {
-      systolic: { min: 60, max: 150 },
+      systolic: { min: 60, max: 150 }, //
       diastolic: { min: 40, max: 60 },
     },
   };
+
+  // "blood_pressure":"95",
+  //   "blood_oxygen":"95",
+  //   "heart_rate": "60"
 
   private static temperatureThresholds = {
     normal: { min: 36.5, max: 37.5 },
@@ -21,6 +25,11 @@ export class HealthThreshold {
   private static heartRateThresholds = {
     normal: { min: 60, max: 120 },
     critical: { min: 50, max: 150 },
+  };
+
+  private static bloodOxygenThresholds = {
+    normal: { min: 95, max: 110 },
+    critical: { min: 90, max: 130 },
   };
 
   public static getBloodPressureThresholds(): any {
@@ -33,5 +42,13 @@ export class HealthThreshold {
 
   public static getHeartRateThresholds(): any {
     return HealthThreshold.heartRateThresholds;
+  }
+
+  public static getBloodOxygenThresholds(): any {
+    return HealthThreshold.bloodOxygenThresholds;
+  }
+
+  public static getBloodOxygenThresholds2(): any {
+    return HealthThreshold.bloodOxygenThresholds;
   }
 }
