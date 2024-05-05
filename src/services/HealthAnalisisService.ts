@@ -3,11 +3,14 @@ import { AlertService } from "./AlertService";
 import { HealthThreshold } from "./HealthThresholds";
 import { TwilioService } from "./TwilioService";
 
+const number = "+244937215016";
+
 export class HealthAnalisisService {
   private bloodPressureThresholds =
     HealthThreshold.getBloodPressureThresholds();
   private temperatureThresholds = HealthThreshold.getTemperatureThresholds();
   private heartRateThresholds = HealthThreshold.getHeartRateThresholds();
+  private bloodOxygenThresholds = HealthThreshold.getBloodOxygenThresholds();
 
   public constructor(
     private alertService: AlertService,
@@ -36,7 +39,7 @@ export class HealthAnalisisService {
           thresholdType2 == "max"
             ? "Pressão arterial está muito elevado"
             : "Pressão arterial está muito baixo",
-        description: `Pressão arterial: ${bloodPressure} mmHg`,
+        description: `Pressão arterial: ${bloodPressure}mmHg`,
         isActive: true,
       };
     } else if (isOutsideNormal) {
@@ -46,7 +49,7 @@ export class HealthAnalisisService {
           thresholdType1 == "max"
             ? "Pressão arterial está elevado"
             : "Pressão arterial está baixa",
-        description: `Pressão arterial: ${bloodPressure} mmHg`,
+        description: `Pressão arterial: ${bloodPressure}mmHg`,
         isActive: true,
       };
     }
@@ -56,12 +59,12 @@ export class HealthAnalisisService {
       if (alertData.type == "Crítico") {
         TwilioService.makeCall(
           `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          "+244927871797"
+          number
         );
       }
       TwilioService.sendSMS(
         `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        "+244927871797"
+        number
       );
     }
   }
@@ -87,7 +90,7 @@ export class HealthAnalisisService {
           thresholdType2 == "max"
             ? "Batimento cardíaco está muito rápido."
             : "Batimento cardíaco está muito lento.",
-        description: `Batimento cardíaco: ${heartRate} bpm`,
+        description: `Batimento cardíaco: ${heartRate}bpm`,
         isActive: true,
       };
     } else if (isOutsideNormal) {
@@ -97,7 +100,7 @@ export class HealthAnalisisService {
           thresholdType1 == "max"
             ? "Batimento cardiaco está rápido."
             : "Batimento cardiaco está lento.",
-        description: `Batimento cardíaco: ${heartRate} bpm`,
+        description: `Batimento cardíaco: ${heartRate}bpm`,
         isActive: true,
       };
     }
@@ -107,12 +110,12 @@ export class HealthAnalisisService {
       if (alertData.type == "Crítico") {
         TwilioService.makeCall(
           `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          "+244927871797"
+          number
         );
       }
       TwilioService.sendSMS(
         `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        "+244927871797"
+        number
       );
     }
   }
@@ -126,7 +129,7 @@ export class HealthAnalisisService {
     );
     const [isOutsideCritical, thresholdType2] = this.isOutsideThreshold(
       temperature,
-      this.temperatureThresholds.normal
+      this.temperatureThresholds.critical
     );
 
     console.log(`Analyzing temperature ${temperature}`);
@@ -138,7 +141,7 @@ export class HealthAnalisisService {
           thresholdType2 == "max"
             ? "Temperatura está muito alta"
             : "Temperatura está muito baixa.",
-        description: `A temperatura corporal é: ${temperature} ºC`,
+        description: `A temperatura corporal é: ${temperature}ºC`,
         isActive: true,
       };
     } else if (isOutsideNormal) {
@@ -148,7 +151,7 @@ export class HealthAnalisisService {
           thresholdType1 == "max"
             ? "Temperatura está alta."
             : "Temperatura está baixa",
-        description: `A temperatura corporal é: ${temperature} ºC`,
+        description: `A temperatura corporal é: ${temperature}ºC`,
         isActive: true,
       };
     }
@@ -158,12 +161,63 @@ export class HealthAnalisisService {
       if (alertData.type == "Crítico") {
         TwilioService.makeCall(
           `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          "+244927871797"
+          number
         );
       }
       TwilioService.sendSMS(
         `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        "+244927871797"
+        number
+      );
+    }
+  }
+
+  public async analyzeBloodOxygen(bloodOxygen: number) {
+    let alertData;
+
+    const [isOutsideNormal, thresholdType1] = this.isOutsideThreshold(
+      bloodOxygen,
+      this.bloodOxygenThresholds.normal
+    );
+    const [isOutsideCritical, thresholdType2] = this.isOutsideThreshold(
+      bloodOxygen,
+      this.bloodOxygenThresholds.critical
+    );
+
+    console.log(`Analyzing bloodOxygen ${bloodOxygen}`);
+
+    if (isOutsideCritical) {
+      alertData = {
+        type: "Crítico",
+        title:
+          thresholdType2 == "max"
+            ? "O Oxigénio no sangue está muito elevado."
+            : "O Oxigénio no sangue está muito baixo.",
+        description: `A Oxigénio no sangue  é: ${bloodOxygen}%`,
+        isActive: true,
+      };
+    } else if (isOutsideNormal) {
+      alertData = {
+        type: "Atenção",
+        title:
+          thresholdType1 == "max"
+            ? "O Oxigénio no sangue está elevado."
+            : "O Oxigénio no sangue está baixo.",
+        description: `O Oxigénio no sangue  é: ${bloodOxygen}%`,
+        isActive: true,
+      };
+    }
+
+    if (alertData) {
+      await this.alertService.createAlert(alertData as Alert, this.braceletId);
+      if (alertData.type == "Crítico") {
+        TwilioService.makeCall(
+          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+          number
+        );
+      }
+      TwilioService.sendSMS(
+        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+        number
       );
     }
   }
