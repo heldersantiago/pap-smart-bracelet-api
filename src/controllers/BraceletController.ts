@@ -100,6 +100,7 @@ export class BraceletController {
       healthAnalyzer.analyzeBloodPressure(params.blood_pressure! as number);
       healthAnalyzer.analyzeHeartRate(params.heart_rate! as number);
       healthAnalyzer.analyzeTemperature(params.body_temperature! as number);
+      healthAnalyzer.analyzeBloodOxygen(params.blood_oxygen! as number);
     }
 
     Bracelet.update(params, update)
