@@ -47,4 +47,8 @@ export class HealthThreshold {
   public static getBloodOxygenThresholds(): any {
     return HealthThreshold.bloodOxygenThresholds;
   }
+
+  public static getBloodOxygenThresholds2(): any {
+    return HealthThreshold.bloodOxygenThresholds;
+  }
 }
