@@ -12,6 +12,11 @@ export class HealthAnalisisService {
   private heartRateThresholds = HealthThreshold.getHeartRateThresholds();
   private bloodOxygenThresholds = HealthThreshold.getBloodOxygenThresholds();
 
+  public static bloodPressureInvalidCount = 0;
+  public static temperatureInvalidCount = 0;
+  public static heartRateInvalidCount = 0;
+  public static bloodOxygenInvalidCount = 0;
+
   public constructor(
     private alertService: AlertService,
     private braceletId: number
@@ -55,17 +60,14 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      if (alertData.type == "Crítico") {
-        TwilioService.makeCall(
-          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          number
-        );
+      HealthAnalisisService.bloodPressureInvalidCount++;
+      console.log(HealthAnalisisService.bloodPressureInvalidCount);
+      if (HealthAnalisisService.bloodPressureInvalidCount === 10) {
+        await this.sendAlert(alertData as Alert);
+        HealthAnalisisService.bloodPressureInvalidCount = 0;
       }
-      TwilioService.sendSMS(
-        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        number
-      );
+    } else {
+      HealthAnalisisService.bloodPressureInvalidCount = 0;
     }
   }
 
@@ -106,17 +108,14 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      if (alertData.type == "Crítico") {
-        TwilioService.makeCall(
-          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          number
-        );
+      HealthAnalisisService.heartRateInvalidCount++;
+      console.log(HealthAnalisisService.heartRateInvalidCount);
+      if (HealthAnalisisService.heartRateInvalidCount === 10) {
+        await this.sendAlert(alertData as Alert);
+        HealthAnalisisService.heartRateInvalidCount = 0;
       }
-      TwilioService.sendSMS(
-        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        number
-      );
+    } else {
+      HealthAnalisisService.heartRateInvalidCount = 0;
     }
   }
 
@@ -157,17 +156,14 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      if (alertData.type == "Crítico") {
-        TwilioService.makeCall(
-          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          number
-        );
+      HealthAnalisisService.temperatureInvalidCount++;
+      console.log(HealthAnalisisService.temperatureInvalidCount);
+      if (HealthAnalisisService.temperatureInvalidCount === 10) {
+        await this.sendAlert(alertData as Alert);
+        HealthAnalisisService.temperatureInvalidCount = 0;
       }
-      TwilioService.sendSMS(
-        `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-        number
-      );
+    } else {
+      HealthAnalisisService.temperatureInvalidCount = 0;
     }
   }
 
@@ -208,18 +204,29 @@ export class HealthAnalisisService {
     }
 
     if (alertData) {
-      await this.alertService.createAlert(alertData as Alert, this.braceletId);
-      if (alertData.type == "Crítico") {
-        TwilioService.makeCall(
-          `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
-          number
-        );
+      HealthAnalisisService.bloodOxygenInvalidCount++;
+      console.log(HealthAnalisisService.bloodOxygenInvalidCount);
+      if (HealthAnalisisService.bloodOxygenInvalidCount === 10) {
+        await this.sendAlert(alertData as Alert);
+        HealthAnalisisService.bloodOxygenInvalidCount = 0;
       }
-      TwilioService.sendSMS(
+    } else {
+      HealthAnalisisService.bloodOxygenInvalidCount = 0;
+    }
+  }
+
+  private async sendAlert(alertData: Alert) {
+    await this.alertService.createAlert(alertData, this.braceletId);
+    if (alertData.type == "Crítico") {
+      TwilioService.makeCall(
         `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
         number
       );
     }
+    TwilioService.sendSMS(
+      `[Estado: ${alertData.type}], Título: [${alertData.title}], Descrição: [${alertData.description}]`,
+      number
+    );
   }
 
   private isOutsideThreshold(

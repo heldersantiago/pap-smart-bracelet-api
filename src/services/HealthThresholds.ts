@@ -13,10 +13,6 @@ export class HealthThreshold {
     },
   };
 
-  // "blood_pressure":"95",
-  //   "blood_oxygen":"95",
-  //   "heart_rate": "60"
-
   private static temperatureThresholds = {
     normal: { min: 36.5, max: 37.5 },
     critical: { min: 35.5, max: 38.5 },
